@@ -53,10 +53,12 @@ class Image_convert{
 	}
 
 	public function do_image_convert($image,$quality,$destination){
-		if(empty($image['tmp_name'])) {
-			echo $error =  '<i class="text-danger">Please select an image or multiple</i>';
-		}elseif($quality ===''){
+		if($quality ===''){
 			echo $error = '<i class="text-danger">Please enter the image quality you want</i>';
+		}elseif(!is_numeric($quality)){
+			echo $error = '<i class="text-danger">The quality field must be numbers only</i>';
+		}elseif(empty($image['tmp_name'])) {
+			echo $error =  '<i class="text-danger">Please select an image or multiple</i>';
 		}else{
 			$allowed =  array('png','jpg','jpeg','gif','JPG'); //allowed extentions
 			$file_ary = $this->get_file_arrays($image);
@@ -108,11 +110,12 @@ $img_conv->do_image_convert($_FILES['img'],$_POST['quality'],$destination);	//th
 	<form action="" method="POST" class="form-herizontal" enctype="multipart/form-data">
 		
 		<div class="col-md-12 form-group">
-			
+		<label>Select Image(s)</label>
 		<input type="file" class="form-control" multiple="" name="img[]">
 		</div>
 		<div class="col-md-12 form-group">
-		<input type="text" class="form-control" name="quality">
+			<label>Enter Image Quality rate</label>
+		<input placeholder="must be numbers only" type="text" class="form-control" name="quality">
 		</div>
 		<div class="col-md-12 form-group">
 		<button type="submit" class="form-control btn btn-primary" name="do_conv">Convert Image</button>
